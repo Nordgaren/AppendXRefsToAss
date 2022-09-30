@@ -12,6 +12,14 @@ The plugin source code and project was built and tested against 3ds Max 2015. In
 environment variable $(ADSK_3DSMAX_SDK_2015) referring to the 3ds Max .NET assemblies (edit the csproj file). You an change this to match 
 the version of 3ds Max you are working with. You will also have to adjust the .NET Framework version to match the 3ds Max version.
 
+Debugging
+============
+To setup debugging, you will need to go to the properties page for the project and go to "debug". Choose "Start external program" and put the path to 3ds max in text box. Set the text box for the "Working Directory" to be the directory that the 3ds max exe is in (make sure it is not a shortcut).
+
+Go to Tools > Options > Debugging Symbols and add http://symbols.autodesk.com/symbols to the list of symbol file locations, and make sure it is selected (checked).
+
+Now when you start the project in debug mode, your breakpoints should catch properly.  
+
 Additional Information
 =================
 This plug-ins framework was written by Kevin Vandecar - Autodesk Developer Network.  
