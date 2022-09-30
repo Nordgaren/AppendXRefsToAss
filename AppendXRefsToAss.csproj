@@ -79,7 +79,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.Max.Wrappers">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\3ds Max 2015\bin\assemblies\Autodesk.Max.Wrappers.dll</HintPath>
+      <HintPath>$(ADSK_3DSMAX_x64_2015)\bin\assemblies\Autodesk.Max.Wrappers.dll</HintPath>
     </Reference>
     <Reference Include="CSharpUtilities">
       <HintPath>$(ADSK_3DSMAX_x64_2015)\CSharpUtilities.dll</HintPath>

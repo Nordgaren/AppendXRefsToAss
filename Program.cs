@@ -58,7 +58,7 @@ namespace AppendXRefsToAss {
     public class AppendXRefsToAssCommand : CuiActionCommandAdapter {
         //Obj Number
         string _objectData = ";OBJECT {0}\r\n" +
-                             "\r\n\"MESH\"\r\n" +
+                             "\"MESH\"\r\n" +
                              // Absolute path to folder
                              "\"{1}\"\r\n" +
                              //Object name
@@ -114,25 +114,24 @@ namespace AppendXRefsToAss {
         }
         
         public override void Execute(object parameter) {
-            //OpenFileDialog ofd = new OpenFileDialog();
+            OpenFileDialog ofd = new OpenFileDialog();
 
-            //if (!ofd.ShowDialog().Value)
-            //    return;
+            if (!ofd.ShowDialog().Value)
+                return;
 
 
             IGlobal global = Autodesk.Max.GlobalInterface.Instance;
 
             IInterface14 ip = global.COREInterface14;
 
-            //string assPath = ofd.FileName;
-            string assPath = @"G:\Steam\steamapps\common\H3EK\data\levels\multi\mansion\structure\mansion.ass";
-            string dataPath = @"G:\Steam\steamapps\common\H3EK\data\";
+            string assPath = ofd.FileName;
+            string dataPath =  Path.GetFullPath(Path.Combine(assPath, @"..\..\..\..\..\"));
 
-            //if (!Path.GetFileName(ass).EndsWith(".ass"))
-            //{
-            //    ip.PushPrompt("File is not an .ASS file");
-            //    return;
-            //}
+            // if (!Path.GetFileName(assPath).EndsWith(".ass"))
+            // {
+            //     ip.PushPrompt("File is not an .ASS file");
+            //     return;
+            // }
 
             List<string> assLines = File.ReadAllLines(assPath).ToList();
             int objectC = 0;
@@ -228,10 +227,9 @@ namespace AppendXRefsToAss {
             assLines[objectIn + 1] = objectC.ToString();
             assLines[instanceIn + 1] = instanceC.ToString();
             assLines.InsertRange(instanceIn, genObjects);
-            assLines.Add("");
             assLines.AddRange(genInstances);
 
-            File.WriteAllLines(assPath + ".testOut", assLines);
+            File.WriteAllLines(assPath, assLines);
             
             ip.PushPrompt($"{objectC} objects and {instanceC} instances written to {Path.GetFileName(assPath)}");
         }

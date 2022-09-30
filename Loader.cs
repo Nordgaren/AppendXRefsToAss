@@ -25,7 +25,7 @@ namespace AppendXRefsToAss
     public class MenuUtilities
     {
         
-        static IActionItem m_mouseAction;
+        static IActionItem m_appendXRefsAction;
         static IActionItem m_builtinVpConfigAction;
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace AppendXRefsToAss
                     // finds our known cui action.
                     if (action != null && action.DescriptionText == AdnMenuSampleStrings.actionText01)
                     {
-                        m_mouseAction = action;
+                        m_appendXRefsAction = action;
                         uint n = actionTable.ContextId;
                     }
                     // finds a known built-in action by string
@@ -66,7 +66,7 @@ namespace AppendXRefsToAss
         static GlobalDelegates.Delegate5 m_MenuPostSaveDelegate;
         static GlobalDelegates.Delegate5 m_SystemStartupDelegate;
 
-        static string menuName = "ADN SampleMenu";
+        static string menuName = "Append XRefs To Ass";
         private static void MenuPostLoadHandler(IntPtr objPtr, IntPtr infoPtr)
         {
             var global = GlobalInterface.Instance;
@@ -150,14 +150,14 @@ namespace AppendXRefsToAss
                 // Launch option
                 {
                     IIMenuItem menuItem1 = global.IMenuItem;
-                    menuItem1.ActionItem = m_mouseAction; // uses text from ActionItem.DescriptionText
+                    menuItem1.ActionItem = m_appendXRefsAction; // uses text from ActionItem.DescriptionText
                     adnSampleMenu.AddItem(menuItem1, -1);
 
-                    IIMenuItem menuItem2 = global.IMenuItem;
-                    menuItem2.ActionItem = m_builtinVpConfigAction;
-                    menuItem2.Title = "ADN Menu Sample - " + menuItem2.ActionItem.DescriptionText; // just to show you can override the text, too.
-                    menuItem2.UseCustomTitle = true;
-                    adnSampleMenu.AddItem(menuItem2, -1);
+                    // IIMenuItem menuItem2 = global.IMenuItem;
+                    // menuItem2.ActionItem = m_builtinVpConfigAction;
+                    // menuItem2.Title = "ADN Menu Sample - " + menuItem2.ActionItem.DescriptionText; // just to show you can override the text, too.
+                    // menuItem2.UseCustomTitle = true;
+                    // adnSampleMenu.AddItem(menuItem2, -1);
                 }
                 // }
                 IIMenuItem adnMenu = global.IMenuItem;
