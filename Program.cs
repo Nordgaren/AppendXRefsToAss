@@ -119,7 +119,6 @@ namespace AppendXRefsToAss {
             if (!ofd.ShowDialog().Value)
                 return;
 
-
             IGlobal global = Autodesk.Max.GlobalInterface.Instance;
 
             IInterface14 ip = global.COREInterface14;
