@@ -9,7 +9,7 @@ If you compile this plugin for another version of max, please send it to me so I
 Getting Started
 ============
 The plugin source code and project was built and tested against 3ds Max 2015. In the project file you will find 
-environment variable $(ADSK_3DSMAX_SDK_2015) referring to the 3ds Max .NET assemblies. You an change this to match 
+environment variable $(ADSK_3DSMAX_SDK_2015) referring to the 3ds Max .NET assemblies (edit the csproj file). You an change this to match 
 the version of 3ds Max you are working with. You will also have to adjust the .NET Framework version to match the 3ds Max version.
 
 Additional Information
