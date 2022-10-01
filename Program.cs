@@ -114,11 +114,17 @@ namespace AppendXRefsToAss {
         }
         
         public override void Execute(object parameter) {
-            OpenFileDialog ofd = new OpenFileDialog();
+            
+            OpenFileDialog ofd = new OpenFileDialog {
+                Title = "Select .ass file",
+                Filter = "ASS Files (*.ass)|*.ass|All files (*.*)|*.*",
+                AddExtension = true,
+            };
 
             if (!ofd.ShowDialog().Value)
                 return;
-
+    
+            DateTime start = DateTime.Now;;
             IGlobal global = Autodesk.Max.GlobalInterface.Instance;
 
             IInterface14 ip = global.COREInterface14;
@@ -172,7 +178,7 @@ namespace AppendXRefsToAss {
                 object rotx = 0f;
                 object roty = 0f;
                 object rotz = 0f;
-                object rotw = 1f;
+                object rotw = 0f;
 
                 object posx = 0f;
                 object posy = 0f;
@@ -230,7 +236,7 @@ namespace AppendXRefsToAss {
 
             File.WriteAllLines(assPath, assLines);
             
-            ip.PushPrompt($"{objectC} objects and {instanceC} instances written to {Path.GetFileName(assPath)}");
+            ip.PushPrompt($"{objectC} objects and {instanceC} instances written to {Path.GetFileName(assPath)} in {start - DateTime.Now:mm\\:ss} seconds");
         }
 
         public override string InternalActionText { get { return AdnMenuSampleStrings.actionText01; } }
