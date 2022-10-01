@@ -6,7 +6,11 @@ This plugin just writes the xrefs to the selected .ASS file. Everything has to b
 
 If you compile this plugin for another version of max, please send it to me so I can add it to the release
 
-Getting Started
+Usage
+============
+Add this plugin to `bin/assemblies` in your 3DS Max folder and boot up max. There will be a new menu at the top, from which you can choose "Append XRefs to Ass". A file dialgue will pop up, asking you to select a `.ass` file. Select one and it will automatically get the data folder from your .ass path. 
+
+Compiling
 ============
 The plugin source code and project was built and tested against 3ds Max 2015. In the project file you will find 
 environment variable $(ADSK_3DSMAX_SDK_2015) referring to the 3ds Max .NET assemblies (edit the csproj file). You can change this to match 
