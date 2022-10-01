@@ -90,6 +90,7 @@ namespace AppendXRefsToAss {
                                "0.0000000000	0.0000000000	0.0000000000\r\n1.0000000000\n";
 
         public override void Execute(object parameter) {
+            
             OpenFileDialog ofd = new OpenFileDialog {
                 Title = "Select .ass file",
                 Filter = "ASS Files (*.ass)|*.ass|All files (*.*)|*.*",
@@ -101,8 +102,8 @@ namespace AppendXRefsToAss {
             if (success.HasValue && !success.Value) return;
 
             DateTime start = DateTime.Now;
-            ;
-            IGlobal global = Autodesk.Max.GlobalInterface.Instance;
+
+            IGlobal global = GlobalInterface.Instance;
 
             IInterface14 ip = global.COREInterface14;
 
@@ -110,8 +111,7 @@ namespace AppendXRefsToAss {
             string dataPathSubstring = "\\data\\";
             int index = assPath.LastIndexOf(dataPathSubstring, StringComparison.InvariantCultureIgnoreCase);
             string dataPath = string.Empty;
-            if (index == -1)
-            {
+            if (index == -1) {
                 OpenFileDialog folderDialog = new OpenFileDialog {
                     Title = "Select data folder",
                     ValidateNames = false,
@@ -121,16 +121,13 @@ namespace AppendXRefsToAss {
                 };
 
                 bool? folderSuccess = folderDialog.ShowDialog();
-                if (folderSuccess.HasValue && folderSuccess.Value)
-                {
+                if (folderSuccess.HasValue && folderSuccess.Value) {
                     dataPath = Path.GetDirectoryName(folderDialog.FileName);
-                } else
-                {
+                } else {
                     ip.PushPrompt("Could not determine \"data\" folder for XRefs.");
                 }
 
-            } else
-            {
+            } else {
                 dataPath = assPath.Substring(0, index  + dataPathSubstring.Length);
             }
 
@@ -140,8 +137,7 @@ namespace AppendXRefsToAss {
             int objectIn = 0;
             int instanceIn = 0;
 
-            for (int i = 0; i < assLines.Count; i++)
-            {
+            for (int i = 0; i < assLines.Count; i++) {
                 string line = assLines[i];
 
                 if (line.StartsWith(";OBJECT")) objectC++;
@@ -153,8 +149,7 @@ namespace AppendXRefsToAss {
             IINode rootNode = ip.RootNode;
             List<IINode> xRefs = new List<IINode>();
 
-            for (int i = 0; i < rootNode.NumberOfChildren; i++)
-            {
+            for (int i = 0; i < rootNode.NumberOfChildren; i++) {
                 IINode childNode = rootNode.GetChildNode(i);
                 if (childNode.Name[0] == '+') xRefs.Add(childNode);
             }
@@ -162,8 +157,7 @@ namespace AppendXRefsToAss {
             List<string> genObjects = new List<string>();
             List<string> genInstances = new List<string>();
 
-            foreach (IINode node in xRefs)
-            {
+            foreach (IINode node in xRefs) {
                 string[] spl = node.Name.Split(':');
                 string name = spl[0].Substring(1, spl[0].Length - 1);
                 string path = dataPath + "\\" + spl[1];
@@ -214,8 +208,7 @@ namespace AppendXRefsToAss {
             object rotz = 0f;
             object rotw = 0f;
 
-            if (rotController.WController == null)
-            {
+            if (rotController.WController == null) {
                 rotController.XController.GetValue(time, ref rotx,
                     interval, GetSetMethod.Absolute);
                 rotController.YController.GetValue(time, ref roty,
@@ -239,6 +232,7 @@ namespace AppendXRefsToAss {
         }
         
         private static Quaternion ToQuaternion(double roll, double pitch, double yaw) {
+            
             double cy = Math.Cos(yaw * 0.5);
             double sy = Math.Sin(yaw * 0.5);
             double cp = Math.Cos(pitch * 0.5);
