@@ -46,6 +46,22 @@ using Microsoft.Win32;
 #endregion
 
 namespace AppendXRefsToAss {
+    
+    public class Quaternion {
+        public Quaternion() { }
+        public Quaternion(double x, double y, double z, double w) {
+            this.w = w;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+            
+        public double w;
+        public double x;
+        public double y;
+        public double z;
+    }
+    
     public class AdnMenuSampleStrings {
         // just convienence for globals strings. Normally strings would probably be loaded from resources
         public static string actionText01 = "Append XRefs to ASS";
@@ -220,6 +236,23 @@ namespace AppendXRefsToAss {
                 interval, GetSetMethod.Absolute);
 
             return new Quaternion((float) rotx, (float) roty, (float) rotx, (float) rotw);
+        }
+        
+        private static Quaternion ToQuaternion(double roll, double pitch, double yaw) {
+            double cy = Math.Cos(yaw * 0.5);
+            double sy = Math.Sin(yaw * 0.5);
+            double cp = Math.Cos(pitch * 0.5);
+            double sp = Math.Sin(pitch * 0.5);
+            double cr = Math.Cos(roll * 0.5);
+            double sr = Math.Sin(roll * 0.5);
+
+            Quaternion q = new Quaternion();
+            q.w = cr * cp * cy + sr * sp * sy;
+            q.x = sr * cp * cy - cr * sp * sy;
+            q.y = cr * sp * cy + sr * cp * sy;
+            q.z = cr * cp * sy - sr * sp * cy;
+
+            return q;
         }
 
         public override string InternalActionText { get { return AdnMenuSampleStrings.actionText01; } }
