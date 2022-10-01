@@ -73,38 +73,6 @@ namespace AppendXRefsToAss {
                                "0.0000000000\t0.0000000000\t0.0000000000\t1.0000000000\r\n" + // X Y Z W - Orientation ?
                                "0.0000000000	0.0000000000	0.0000000000\r\n1.0000000000\n";
 
-        public class Quaternion {
-            public Quaternion() { }
-            public Quaternion(double x, double y, double z, double w) {
-                this.w = w;
-                this.x = x;
-                this.y = y;
-                this.z = z;
-            }
-            
-            public double w;
-            public double x;
-            public double y;
-            public double z;
-        }
-
-        public static Quaternion ToQuaternion(double roll, double pitch, double yaw) {
-            double cy = Math.Cos(yaw * 0.5);
-            double sy = Math.Sin(yaw * 0.5);
-            double cp = Math.Cos(pitch * 0.5);
-            double sp = Math.Sin(pitch * 0.5);
-            double cr = Math.Cos(roll * 0.5);
-            double sr = Math.Sin(roll * 0.5);
-
-            Quaternion q = new Quaternion();
-            q.w = cr * cp * cy + sr * sp * sy;
-            q.x = sr * cp * cy - cr * sp * sy;
-            q.y = cr * sp * cy + sr * cp * sy;
-            q.z = cr * cp * sy - sr * sp * cy;
-
-            return q;
-        }
-
         public override void Execute(object parameter) {
             OpenFileDialog ofd = new OpenFileDialog {
                 Title = "Select .ass file",
@@ -124,7 +92,7 @@ namespace AppendXRefsToAss {
 
             string assPath = ofd.FileName;
             string dataPathSubstring = "\\data\\";
-            int index = assPath.LastIndexOf(dataPathSubstring) + dataPathSubstring.Length;
+            int index = assPath.LastIndexOf(dataPathSubstring, StringComparison.InvariantCultureIgnoreCase);
             string dataPath = string.Empty;
             if (index == -1)
             {
@@ -147,7 +115,7 @@ namespace AppendXRefsToAss {
 
             } else
             {
-                dataPath = assPath.Substring(0, index);
+                dataPath = assPath.Substring(0, index  + dataPathSubstring.Length);
             }
 
             List<string> assLines = File.ReadAllLines(assPath).ToList();
