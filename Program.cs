@@ -112,25 +112,24 @@ namespace AppendXRefsToAss {
 
             return q;
         }
-        
+
         public override void Execute(object parameter) {
-            
             OpenFileDialog ofd = new OpenFileDialog {
                 Title = "Select .ass file",
                 Filter = "ASS Files (*.ass)|*.ass|All files (*.*)|*.*",
                 AddExtension = true,
             };
 
-            if (!ofd.ShowDialog().Value)
-                return;
-    
-            DateTime start = DateTime.Now;;
+            if (!ofd.ShowDialog().Value) return;
+
+            DateTime start = DateTime.Now;
+            ;
             IGlobal global = Autodesk.Max.GlobalInterface.Instance;
 
             IInterface14 ip = global.COREInterface14;
 
             string assPath = ofd.FileName;
-            string dataPath =  Path.GetFullPath(Path.Combine(assPath, @"..\..\..\..\..\"));
+            string dataPath = Path.GetFullPath(Path.Combine(assPath, @"..\..\..\..\..\"));
 
             // if (!Path.GetFileName(assPath).EndsWith(".ass"))
             // {
@@ -175,54 +174,26 @@ namespace AppendXRefsToAss {
                 string objEntry = string.Format(_objectData, objectC, path, name);
                 genObjects.Add(objEntry);
 
-                object rotx = 0f;
-                object roty = 0f;
-                object rotz = 0f;
-                object rotw = 0f;
+                IInterval interval = global.Interval.Create(int.MinValue,
+                    int.MaxValue);
+
+                int time = ip.Time;
+
+                Quaternion quat = GetRotationQuaternion(node.TMController.RotationController, time, interval);
 
                 object posx = 0f;
                 object posy = 0f;
                 object posz = 0f;
 
-                IControl rotController = node.TMController.RotationController;
-                Quaternion quat = null;
-
-                if (rotController.WController == null)
-                {
-                    rotController.XController.GetValue(ip.Time, ref rotx,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                    rotController.YController.GetValue(ip.Time, ref roty,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                    rotController.ZController.GetValue(ip.Time, ref rotz,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-
-                    quat = ToQuaternion((float) rotx, (float) roty, (float) rotz);
-                } else
-                {
-                    rotController.XController.GetValue(ip.Time, ref rotx,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                    rotController.YController.GetValue(ip.Time, ref roty,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                    rotController.ZController.GetValue(ip.Time, ref rotz,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                    rotController.WController.GetValue(ip.Time, ref rotw,
-                        global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                    
-                    quat =  new Quaternion( (float)rotx, (float)roty, (float)rotx, (float)rotw);
-                }
-
-
                 IControl posController = node.TMController.PositionController;
-                posController.XController.GetValue(ip.Time, ref posx,
-                    global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                posController.YController.GetValue(ip.Time, ref posy,
-                    global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
-                posController.ZController.GetValue(ip.Time, ref posz,
-                    global.Interval.Create(int.MinValue, int.MaxValue), GetSetMethod.Absolute);
+                posController.XController.GetValue(time, ref posx, interval, GetSetMethod.Absolute);
+                posController.YController.GetValue(time, ref posy, interval, GetSetMethod.Absolute);
+                posController.ZController.GetValue(time, ref posz, interval, GetSetMethod.Absolute);
 
                 string insEntry = string.Format(_instanceData, instanceC, objectC, name, instanceC - 1, 1,
-                    $"{quat.x:F10}", $"{quat.y:F10}",
-                    $"{quat.z:F10}", $"{quat.w:F10}", $"{posx:F10}", $"{posy:F10}", $"{posz:F10}");
+                    $"{quat.x:F10}", $"{quat.y:F10}", $"{quat.z:F10}", $"{quat.w:F10}", 
+                    $"{posx:F10}", $"{posy:F10}", $"{posz:F10}");
+                
                 genInstances.Add(insEntry);
 
                 objectC++;
@@ -235,8 +206,9 @@ namespace AppendXRefsToAss {
             assLines.AddRange(genInstances);
 
             File.WriteAllLines(assPath, assLines);
-            
-            ip.PushPrompt($"{objectC} objects and {instanceC} instances written to {Path.GetFileName(assPath)} in {start - DateTime.Now:mm\\:ss} seconds");
+
+            ip.PushPrompt(
+                $"{objectC} objects and {instanceC} instances written to {Path.GetFileName(assPath)} in {start - DateTime.Now:mm\\:ss} seconds");
         }
 
         public override string InternalActionText { get { return AdnMenuSampleStrings.actionText01; } }
