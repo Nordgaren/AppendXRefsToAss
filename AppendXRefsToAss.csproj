@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AppendXRefsToAss</RootNamespace>
     <AssemblyName>AppendXRefsToAss</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -75,22 +75,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autodesk.Max">
-      <HintPath>$(ADSK_3DSMAX_x64_2015)\2018\Autodesk.Max.dll</HintPath>
+      <HintPath>$(ADSK_3DSMAX_x64_2015)\2023\Autodesk.Max.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.Max.Wrappers">
-      <HintPath>$(ADSK_3DSMAX_x64_2015)\2018\bin\assemblies\Autodesk.Max.Wrappers.dll</HintPath>
+      <HintPath>$(ADSK_3DSMAX_x64_2015)\2023\bin\assemblies\Autodesk.Max.Wrappers.dll</HintPath>
     </Reference>
     <Reference Include="CSharpUtilities">
-      <HintPath>$(ADSK_3DSMAX_x64_2015)\2018\CSharpUtilities.dll</HintPath>
+      <HintPath>$(ADSK_3DSMAX_x64_2015)\2023\CSharpUtilities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ManagedServices">
-      <HintPath>$(ADSK_3DSMAX_x64_2015)\2018\ManagedServices.dll</HintPath>
+      <HintPath>$(ADSK_3DSMAX_x64_2015)\2023\ManagedServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MaxCustomControls">
-      <HintPath>$(ADSK_3DSMAX_x64_2015)\2018\MaxCustomControls.dll</HintPath>
+      <HintPath>$(ADSK_3DSMAX_x64_2015)\2023\MaxCustomControls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore">
@@ -150,7 +150,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(ADSK_3DSMAX_x64_2015)\2018\bin\assemblies"
+    <PostBuildEvent>copy "$(TargetPath)" "$(ADSK_3DSMAX_x64_2015)\2023\bin\assemblies"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
