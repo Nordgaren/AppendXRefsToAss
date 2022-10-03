@@ -67,7 +67,7 @@ namespace AppendXRefsToAss
         static GlobalDelegates.Delegate5 m_SystemStartupDelegate;
 
         static string menuName = "Append XRefs To Ass";
-        private static void MenuPostLoadHandler(IntPtr objPtr, IntPtr infoPtr)
+        private static void MenuPostLoadHandler(IntPtr objPtr, INotifyInfo infoPtr)
         {
             var global = GlobalInterface.Instance;
             var ip = global.COREInterface13;
@@ -76,7 +76,7 @@ namespace AppendXRefsToAss
             if (menu == null)
                 InstallMenu();
         }
-        private static void MenuPreSaveHandler(IntPtr objPtr, IntPtr infoPtr)
+        private static void MenuPreSaveHandler(IntPtr objPtr, INotifyInfo infoPtr)
         {
             var global = GlobalInterface.Instance;
             var ip = global.COREInterface13;
@@ -85,7 +85,7 @@ namespace AppendXRefsToAss
             if (menu != null)
                 RemoveMenu(menuName);
         }
-        private static void MenuPostSaveHandler(IntPtr objPtr, IntPtr infoPtr)
+        private static void MenuPostSaveHandler(IntPtr objPtr, INotifyInfo infoPtr)
         {
             var global = GlobalInterface.Instance;
             var ip = global.COREInterface13;
@@ -94,7 +94,7 @@ namespace AppendXRefsToAss
             if (menu == null)
                 InstallMenu();
         }
-        private static void MenuSystemStartupHandler(IntPtr objPtr, IntPtr infoPtr)
+        private static void MenuSystemStartupHandler(IntPtr objPtr, INotifyInfo infoPtr)
         {
             var global = GlobalInterface.Instance;
             var ip = global.COREInterface13;
